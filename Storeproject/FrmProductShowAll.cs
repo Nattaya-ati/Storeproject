@@ -41,7 +41,7 @@ namespace Storeproject
             }
         }
 
-        private void FrmProductShowAll_Load(object sender, EventArgs e)
+        private void getAllProductToLV()
         {
             //Connect String เพื่อติดต่อไปยัง ฐานข้อมูล
             string connectionString = @"Server=Jam;Database=store_db;Trusted_Connection=True";
@@ -135,6 +135,35 @@ namespace Storeproject
                     MessageBox.Show("พบข้อผิดพลาด กรุณาลองใหม่หรือติดต่อ IT : " + ex.Message);
                 }
             }
+        }
+
+        private void FrmProductShowAll_Load(object sender, EventArgs e)
+        {
+            getAllProductToLV();
+        }
+
+        private void btnFrmProductCreate_Click(object sender, EventArgs e)
+        {
+            //เปิดฟอร์ม FrmProductCreate แบบ Dialog/Popup (เราไม่สามารถทำอะไรก็หน้าต่างข้างหลังได้)
+            //เริ่มจากสร้าง Object (ตัวแทน) ของ FrmProductCreate
+            FrmProductCreate frmProductCreate = new FrmProductCreate();
+
+            //เปิดFromแบบปกติ 
+            //frmProductCreate.Show();
+
+            //เปิดFrom แบบDialog/Popup
+            frmProductCreate.ShowDialog();
+            getAllProductToLV();
+        }
+
+        private void lvAllProduct_ItemActivate(object sender, EventArgs e)
+        {
+            //เปิดหน้าจอ FrmProductUpDel แบบ Dialog โดยจะส่ง proId ของรายการที่เลือกไปด้วย
+            FrmPruductUpDel frmPruductUpDel = new FrmPruductUpDel(
+               int.Parse( lvAllProduct.SelectedItems[0].SubItems[1].Text)
+            );
+            frmPruductUpDel.ShowDialog();
+            getAllProductToLV() ;
         }
     }
 }
